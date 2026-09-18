@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Invitación</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #000000;
+            text-align: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Luces del fondo */
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            background: #222222;
+            border-radius: 50%;
+            top: -150px;
+            left: -150px;
+            filter: blur(80px);
+            opacity: 0.8;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: #333333;
+            border-radius: 50%;
+            bottom: -150px;
+            right: -120px;
+            filter: blur(90px);
+            opacity: 0.7;
+        }
+
+        .tarjeta {
+            position: relative;
+            z-index: 2;
+            background: #111111;
+            width: 90%;
+            max-width: 430px;
+            padding: 35px 25px;
+            border-radius: 28px;
+
+            border: 1px solid #444;
+
+            box-shadow:
+                    0 0 25px rgba(255,255,255,0.08),
+                    0 15px 40px rgba(0,0,0,0.8);
+
+            animation: aparecer 0.8s ease;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Sopita */
+
+        .emoji {
+            font-size: 60px;
+            animation: flotar 2s infinite ease-in-out;
+        }
+
+        @keyframes flotar {
+
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        h2 {
+            color: #dddddd;
+            font-size: 22px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        #mensaje {
+            color: #ffffff;
+            font-size: 18px;
+            min-height: 28px;
+            margin-bottom: 20px;
+        }
+
+        /* BOTONES */
+
+        button {
+            border: none;
+            padding: 14px 28px;
+            margin: 8px;
+            border-radius: 30px;
+            font-size: 17px;
+            cursor: pointer;
+            transition: 0.25s;
+            font-weight: bold;
+        }
+
+        #si {
+            background: white;
+            color: black;
+            box-shadow: 0 0 15px rgba(255,255,255,0.25);
+        }
+
+        #no {
+            background: #222222;
+            color: white;
+            border: 1px solid #555555;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #final {
+            display: none;
+        }
+
+        /* Corazones */
+
+        .corazon {
+            position: fixed;
+            bottom: -30px;
+            font-size: 25px;
+            animation: subir 4s linear forwards;
+            z-index: 5;
+        }
+
+        @keyframes subir {
+
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<div class="tarjeta" id="principal">
+
+    <div class="emoji">🍲💌</div>
+
+    <h1>Hey tu mi querida amiga Erika💗</h1>
+
+    <h2>
+        ¿Quieres salir a comer<br>
+        sopita de pollo?:<
+    </h2>
+
+    <p id="mensaje"></p>
+
+    <button id="si">SÍ 😋</button>
+    <button id="no">NO 🙄</button>
+
+</div>
+
+
+<div class="tarjeta" id="final">
+
+    <div class="emoji">🎉🍲❤️</div>
+
+    <h1>¡Sabía que dirías que sí XD fue voluntad heee! 😎</h1>
+
+    <h2>
+        ¡Sopita de pollo confirmada! 🍲jaja
+    </h2>
+
+    <p>
+        Entonces queda pendiente esa sopita, Erika 😂
+        la siguente semana, ahora si duermeeee
+    </p>
+
+</div>
+
+
+<script>
+
+    const botonSi = document.getElementById("si");
+    const botonNo = document.getElementById("no");
+
+    const mensaje = document.getElementById("mensaje");
+
+    const principal = document.getElementById("principal");
+    const final = document.getElementById("final");
+
+    let intentos = 0;
+
+
+    /* BOTÓN SÍ */
+
+    botonSi.addEventListener("click", function() {
+
+        principal.style.display = "none";
+        final.style.display = "block";
+
+        crearCorazones();
+
+    });
+
+
+    /* BOTÓN NO */
+
+    botonNo.addEventListener("click", function() {
+
+        intentos++;
+
+        if (intentos === 1) {
+
+            mensaje.textContent =
+                "¿Segurita Erika? 😂🍲";
+
+        }
+
+        else if (intentos === 2) {
+
+            mensaje.textContent =
+                "Piénsalo otra vez 👀🍲";
+
+        }
+
+        else if (intentos === 3) {
+
+            mensaje.textContent =
+                "El NO no funciona jajaja 😂";
+
+        }
+
+        else if (intentos === 4) {
+
+            mensaje.textContent =
+                "Solo queda una opción... 😎";
+
+        }
+
+        else if (intentos === 5) {
+
+            mensaje.textContent =
+                "Erikaaaa, vamos por esa sopita 😂🍲";
+
+        }
+
+        else {
+
+            mensaje.textContent =
+                "Ese botón NO ya está de adorno JAJAJA 😂";
+
+        }
+
+    });
+
+
+    /* CORAZONES Y SOPITAS */
+
+    function crearCorazones() {
+
+        for (let i = 0; i < 25; i++) {
+
+            const elemento = document.createElement("div");
+
+            elemento.classList.add("corazon");
+
+            elemento.textContent =
+                Math.random() > 0.5 ? "🖤" : "🍲";
+
+            elemento.style.left =
+                Math.random() * 100 + "vw";
+
+            elemento.style.animationDuration =
+                (2 + Math.random() * 3) + "s";
+
+            document.body.appendChild(elemento);
+
+
+            setTimeout(function() {
+
+                elemento.remove();
+
+            }, 5000);
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+</html>
